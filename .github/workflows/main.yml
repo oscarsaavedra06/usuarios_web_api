@@ -21,7 +21,7 @@ jobs:
       - run: npm run test
       - name: result
         if: ${{ success() }}
-        run: "echo 'hola'"
+        run: "echo 'ok'"
       - name: result
         if: ${{ failure() }}
-        run: "echo 'hola'"
+        run: "echo 'bad'"
