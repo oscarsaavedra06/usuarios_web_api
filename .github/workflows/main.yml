@@ -19,3 +19,9 @@ jobs:
       - run: npm install
       #- run: npm run test:ci
       - run: npm run test
+      - name: result
+        if: ${{ success() }}
+        run: "echo 'hola'"
+      - name: result
+        if: ${{ failure() }}
+        run: "echo 'hola'"
