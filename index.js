@@ -1,25 +1,18 @@
 const express = require('express');
 var cors = require('cors')
 const bodyParser = require('body-parser');
+const User= require("./models/user.model.js")
 const mongoose = require('mongoose');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors())
-// Connect to MongoDB
+// Connect to MongoDB 
 mongoose.connect('mongodb://root:rootpassword@localhost:27017/?authMechanism=DEFAULT', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-// Create a user schema
-const userSchema = new mongoose.Schema({
-  name: String,
-  email: String,
-});
-
-// Create a user model
-const User = mongoose.model('User', userSchema);
 
 // Get all users
 app.get('/users', async (req, res) => {
@@ -30,9 +23,13 @@ app.get('/users', async (req, res) => {
 // Get a user by ID
 app.get('/users/:id', async (req, res) => {
   const userId = req.params.id;
-
+console.log(userId)
   try {
-    const user = await User.findById(userId);
+    if(!mongoose.Types.ObjectId.isValid(userId)){
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+    const user = await User.findById(userId.toString());
 
     if (!user) {
       res.status(404).json({ error: 'User not found' });
@@ -41,7 +38,8 @@ app.get('/users/:id', async (req, res) => {
 
     res.json(user);
   } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
+    console.log(error)
+    res.status(500).json({ error: 'Internal server error' + error.message });
   }
 });
 
@@ -65,6 +63,11 @@ app.put('/users/:id', async (req, res) => {
   const { name, email } = req.body;
 
   try {
+    if(!mongoose.Types.ObjectId.isValid(userId)){
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+
     const user = await User.findByIdAndUpdate(
       userId,
       { name, email },
@@ -87,6 +90,10 @@ app.delete('/users/:id', async (req, res) => {
   const userId = req.params.id;
 
   try {
+    if(!mongoose.Types.ObjectId.isValid(userId)){
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
     const user = await User.findByIdAndRemove(userId);
 
     if (!user) {
@@ -102,7 +109,7 @@ app.delete('/users/:id', async (req, res) => {
 
 // Start the server
 app.listen(3001, () => {
-  console.log('Server is running on port 3001');
+  // console.log('Server is running on port 3001');
 });
 
 module.exports = app;
