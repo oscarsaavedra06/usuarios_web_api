@@ -5,7 +5,7 @@ const User  = require('./models/user.model');
 // const MongoMemoryServer = require('mongodb-memory-server').MongoMemoryServer;
 
 beforeEach(async () => {
-  await mongoose.connect("mongodb://root:rootpassword@localhost:27017/?authMechanism=DEFAULT");
+  await mongoose.connect("mongodb+srv://adminsirelsoft:1qaz0okm@clustersirelsoft.7dcungv.mongodb.net/test");
 });
 
 /* Closing database connection after each test. */

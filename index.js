@@ -8,7 +8,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors())
 // Connect to MongoDB 
-mongoose.connect('mongodb://root:rootpassword@localhost:27017/?authMechanism=DEFAULT', {
+mongoose.connect('mongodb+srv://adminsirelsoft:1qaz0okm@clustersirelsoft.7dcungv.mongodb.net/test', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
