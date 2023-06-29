@@ -4,11 +4,11 @@ on:
   pull_request:
     branches: [ main ]
     
-name: Deploy
+name: CI/CD Pipeline
 
 jobs:
-  deploy:
-    name: Deploy
+  test:
+    name: Tests
     runs-on: ubuntu-latest
 
     steps:
@@ -19,3 +19,29 @@ jobs:
       - run: npm install
       #- run: npm run test:ci
       - run: npm run test
+      - name: result
+        if: ${{ success() }}
+        run: "echo 'Pruebas exitosas'"
+      - name: result
+        if: ${{ failure() }}
+        run: "echo 'Fallo en set de pruebas'"
+        
+  build:
+    name: Build and Push DH
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+      - uses: actions/checkout@v3
+      - name: docker login
+        env: 
+          DOCKER_USER: ${{secrets.DOCKER_USER}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+        run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      - name: build docker image
+        run: docker build . --file Dockerfile --tag oscarsaavedra12/usuariosapi:latest
+      - name: docker hub push
+        run: docker push ${{secrets.DOCKER_USER}}/usuariosapi
+      
+  
