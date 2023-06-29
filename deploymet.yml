@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-webapi-deployment
+  labels:
+    app: users-webapi
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: users-webapi
+  template:
+    metadata:
+      labels:
+        app: users-webapi
+    spec:
+      containers:
+      - name: users-webapi
+        image: oscarsaavedra12/usuariosapi:latest
+        ports:
+        - containerPort: 3000
