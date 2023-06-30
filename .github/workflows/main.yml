@@ -47,7 +47,7 @@ jobs:
   deploy:
     name: Deploy in kubernetes cluster
     runs-on: ubuntu-latest
-    needs: test
+    needs: build
     
     steps:
       - uses: actions/checkout@v3
