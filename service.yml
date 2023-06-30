@@ -5,7 +5,9 @@ metadata:
 spec:
   selector:
     app: users-webapi
+    tier: backend
   ports:
-     - port: 3000
-       targetPort: 3000
-  type: LoadBalancer
+    - protocol: TCP
+      port: 80
+      targetPort: http
+  # type: LoadBalancer
