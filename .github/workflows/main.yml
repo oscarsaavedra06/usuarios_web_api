@@ -18,7 +18,7 @@ jobs:
           node-version: '14'
       - run: npm install
       #- run: npm run test:ci
-      - run: npm run test
+      - run: sudo npm run test
       - name: result
         if: ${{ success() }}
         run: "echo 'Pruebas exitosas'"
